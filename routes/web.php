@@ -27,12 +27,16 @@ Route::get('/company/{url}', [NavigationController::class, 'company'])->name('na
 Route::post('/apply/{url}', [NavigationController::class, 'store'])->name('nav.submit');
 
 // Admin routes
-Route::prefix('admin')->group(function (){
+Route::prefix('painel')->group(function (){
+
+    Route::get('/',function(){
+        echo "TESTE";
+    })->name('admin.index');
 
     // Organizations routes
-    Route::get('organization/form{url?}', [OrganizationsController::class, 'form'])->name('organization.form');
+    Route::get('organization/form/{url?}', [OrganizationsController::class, 'form'])->name('organization.form');
     Route::post('organization/create', [OrganizationsController::class, 'store'])->name('organization.store');
-    Route::put('organization/update/{url}', [OrganizationsController::class, 'update'])->name('organization.update');
+    Route::post('organization/update/{url}', [OrganizationsController::class, 'update'])->name('organization.update');
     Route::get('organization/delete/{url}', [OrganizationsController::class, 'delete'])->name('organization.delete');
 
     // Offers routes
@@ -44,8 +48,9 @@ Route::prefix('admin')->group(function (){
     // Candidates routes
     Route::get('candidates/list', [CandidatesController::class, 'list'])->name('candidate.list');
     Route::get('candidate/list/{url}', [CandidatesController::class, 'offer'])->name('candidate.offer');
-    Route::get('candidate/{candidate_id}', [CandidatesController::class, 'single'])->name('candidate.single');
-    Route::get('candidates/delete/{id}', [CandidatesController::class, 'delete'])->name('candidate.delete');
+    Route::get('candidate/{id?}', [CandidatesController::class, 'single'])->name('candidate.single');
+    Route::get('candidates/delete/{id?}', [CandidatesController::class, 'delete'])->name('candidate.delete');
+    Route::get('candidate/json/{url?}', [CandidatesController::class, 'listAll'])->name('candidate.list.all');
 
     // Downloads Routes
     Route::get('download/{url?}', [DownloadController::class, 'download'])->name('download.files');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Offers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 class OffersController extends Controller
 {
@@ -13,6 +14,9 @@ class OffersController extends Controller
     public function __construct()
     {
         $this->model = new Offers();
+
+        View::share('organizations', \App\Models\Organizations::get());
+        View::share('offers', \App\Models\Offers::get());
     }
 
     public function form(Request $request)

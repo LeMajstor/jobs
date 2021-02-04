@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Candidates;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 class CandidatesController extends Controller
 {
@@ -13,6 +14,10 @@ class CandidatesController extends Controller
     public function __construct()
     {
         $this->model = new Candidates();
+        
+        View::share('organizations', \App\Models\Organizations::get());
+        View::share('offers', \App\Models\Offers::get());
+
     }
 
 
@@ -20,6 +25,16 @@ class CandidatesController extends Controller
     { 
         $candidates = $this->model->get();
         return view('admin.candidate.index', ['candidates' => $candidates]);
+    }
+
+    public function listAll (Request $request)
+    {
+        $url = $request->route('url');
+        $offer = \App\Models\Offers::where('url', $url)->get()->first();
+        $collection = $offer->candidates()->get()->all();
+        $data['data'] = $collection;        
+        echo json_encode($data);
+
     }
 
     public function offer(Request $request)
